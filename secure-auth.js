@@ -8,7 +8,7 @@ const base = ''; // No base path needed if deployed at root
 
 // Replace with your actual credentials
 const CLIENT_ID = 'aWhxbmxMTDFQRXlaTG1GeDQ5NFU6MTpjaQ';
-const REDIRECT_URI = 'https://YOUR_RENDER_URL.onrender.com/callback'; // 👈 Replace this after deploying
+const REDIRECT_URI = 'https://twitter-auth-server.onrender.com/callback'; // 👈 Replace this after deploying
 const SCOPES = 'tweet.read tweet.write users.read offline.access';
 
 const sessionStore = {};
