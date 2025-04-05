@@ -4,14 +4,16 @@ import crypto from 'crypto';
 
 const app = express();
 const port = process.env.PORT || 3000;
-const base = ''; // No base path needed for root deployment
+const base = ''; // No base path needed if deployed at root
 
+// Replace with your actual credentials
 const CLIENT_ID = 'aWhxbmxMTDFQRXlaTG1GeDQ5NFU6MTpjaQ';
-const REDIRECT_URI = 'https://YOUR_RENDER_URL.onrender.com/callback';
+const REDIRECT_URI = 'https://YOUR_RENDER_URL.onrender.com/callback'; // 👈 Replace this after deploying
 const SCOPES = 'tweet.read tweet.write users.read offline.access';
 
 const sessionStore = {};
 
+// --- Helpers for PKCE ---
 function generateCodeVerifier() {
   return crypto.randomBytes(32).toString('hex');
 }
@@ -24,10 +26,12 @@ function generateCodeChallenge(verifier) {
     .replace(/\//g, '_');
 }
 
+// --- Health check route ---
 app.get(`${base}/`, (req, res) => {
   res.send('✅ Twitter Auth Server is Live!');
 });
 
+// --- Start OAuth flow ---
 app.get(`${base}/start`, (req, res) => {
   const codeVerifier = generateCodeVerifier();
   const codeChallenge = generateCodeChallenge(codeVerifier);
@@ -48,11 +52,14 @@ app.get(`${base}/start`, (req, res) => {
   res.redirect(authUrl.toString());
 });
 
+// --- Handle callback from Twitter ---
 app.get(`${base}/callback`, async (req, res) => {
   const { code, state, error, error_description } = req.query;
 
   if (error) return res.send(`❌ Twitter Error: ${error} - ${error_description}`);
-  if (!code || !state || !sessionStore[state]) return res.send('❌ Missing or invalid code/state. Try /start again.');
+  if (!code || !state || !sessionStore[state]) {
+    return res.send('❌ Missing or invalid code/state. Try /start again.');
+  }
 
   const codeVerifier = sessionStore[state];
   delete sessionStore[state];
@@ -60,20 +67,21 @@ app.get(`${base}/callback`, async (req, res) => {
   try {
     const tokenData = await exchangeCodeForToken(code, codeVerifier);
     if (tokenData.access_token) {
-      return res.send(\`
+      return res.send(`
         <h1>✅ Success!</h1>
         <p>Your Bearer Token:</p>
-        <code>\${tokenData.access_token}</code>
+        <code>${tokenData.access_token}</code>
         <p>Store it securely. This gives access to your Twitter account.</p>
-      \`);
+      `);
     } else {
-      return res.send(\`<h2>❌ Failed to get access_token</h2><pre>\${JSON.stringify(tokenData)}</pre>\`);
+      return res.send(`<h2>❌ Failed to get access_token</h2><pre>${JSON.stringify(tokenData)}</pre>`);
     }
   } catch (err) {
-    return res.send(\`❌ Token Exchange Error: \${err.message}\`);
+    return res.send(`❌ Token Exchange Error: ${err.message}`);
   }
 });
 
+// --- Token exchange ---
 async function exchangeCodeForToken(code, codeVerifier) {
   const tokenUrl = 'https://api.twitter.com/2/oauth2/token';
 
@@ -101,6 +109,7 @@ async function exchangeCodeForToken(code, codeVerifier) {
   return resp.json();
 }
 
+// --- Launch server ---
 app.listen(port, () => {
   console.log(`🚀 Server running on port ${port}`);
 });
