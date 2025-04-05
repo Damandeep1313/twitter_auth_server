@@ -1,4 +1,4 @@
-# Use Node.js LTS version as base
+# Use Node.js 18 LTS Alpine (lightweight and stable)
 FROM node:18-alpine
 
 # Set working directory
@@ -8,11 +8,11 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 
-# Copy the rest of the application
+# Copy the rest of the source code
 COPY . .
 
-# Expose the app port
+# Expose app port
 EXPOSE 3000
 
 # Start the app
-CMD ["npm", "start"]
+CMD ["node", "secure-auth.js"]
