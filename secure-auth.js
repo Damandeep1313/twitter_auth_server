@@ -96,7 +96,7 @@ async function exchangeCodeForToken(code, codeVerifier) {
   const resp = await fetch(tokenUrl, {
     method: 'POST',
     headers: {
-      'Content-Type': 'application/x-www-form-urlencoded',
+      'Content-Type': 'application/x-www-form-urlencoded'
     },
     body: bodyParams
   });
