@@ -1,0 +1,13 @@
+{
+  "name": "twitter-auth-server",
+  "version": "1.0.0",
+  "type": "module",
+  "main": "secure-auth.js",
+  "scripts": {
+    "start": "node secure-auth.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "node-fetch": "^2.6.7"
+  }
+}
