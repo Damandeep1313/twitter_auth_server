@@ -71,7 +71,7 @@ app.get(`${base}/callback`, async (req, res) => {
       return res.send(`
         <h1>✅ Success!</h1>
         <p>YOUR AUTHORIZATION TOKEN:</p>
-        <p><code>${bearerToken}</code></p>
+        <h1><code>${bearerToken}</code></h1>
         <p>Store it securely. This gives access to your Twitter account.</p>
         `);
     } else {
