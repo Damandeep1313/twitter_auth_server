@@ -67,12 +67,13 @@ app.get(`${base}/callback`, async (req, res) => {
   try {
     const tokenData = await exchangeCodeForToken(code, codeVerifier);
     if (tokenData.access_token) {
+      const bearerToken = `Bearer ${tokenData.access_token}`;
       return res.send(`
         <h1>✅ Success!</h1>
-        <p>Your Bearer Token:</p>
-        <code>${tokenData.access_token}</code>
+        <p>YOUR AUTHORIZATION TOKEN:</p>
+        <code>${bearerToken}</code>
         <p>Store it securely. This gives access to your Twitter account.</p>
-      `);
+        `);
     } else {
       return res.send(`<h2>❌ Failed to get access_token</h2><pre>${JSON.stringify(tokenData)}</pre>`);
     }
