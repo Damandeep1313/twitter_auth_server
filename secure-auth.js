@@ -74,7 +74,7 @@ app.get(`${base}/callback`, async (req, res) => {
         <h1><code>${bearerToken}</code></h1>
 
         <p><strong>REFRESH TOKEN:</strong></p>
-        <h1><code>${tokenData.refresh_token || 'No refresh token received'}</code></h1>
+        <h1><code>Bearer ${tokenData.refresh_token || 'No refresh token received'}</code></h1>
         <p>Store it securely. This gives access to your Twitter account.</p>
         `);
     } else {
