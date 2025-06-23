@@ -70,8 +70,8 @@ app.get(`${base}/callback`, async (req, res) => {
       const bearerToken = `Bearer ${tokenData.access_token}`;
       return res.send(`
         <h1>✅ Success!</h1>
-        <p>YOUR AUTHORIZATION TOKEN:</p>
-        <h1><code>${bearerToken}</code></h1>
+        // <p>YOUR AUTHORIZATION TOKEN:</p>
+        // <h1><code>${bearerToken}</code></h1>
 
         <p><strong>REFRESH TOKEN:</strong></p>
         <h1><code>Bearer ${tokenData.refresh_token || 'No refresh token received'}</code></h1>
